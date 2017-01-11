@@ -10,6 +10,9 @@ module.exports = function (G) {
             'username',
             'password'
         ],
+        privateTableProps: [
+            'password'
+        ],
         msg: {
             name: 'name',
             add: 'add',

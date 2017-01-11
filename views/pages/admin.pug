@@ -1,0 +1,40 @@
+block content
+    #page-title= req.strs.users
+    #crud-form.child-view(v-if="seeForm")
+        .page-subtitle
+            .mdi.mdi-chevron-left.icon(v-on:click="hideForm")
+            span(v-if="formEdit")= req.strs.edit
+                |  {{ formItemName }}
+            span(v-else)= req.strs.add
+        form.pure-form.pure-form-stacked(v-on:submit.prevent="submit")
+            label(for="name")= req.strs.username
+            input(type="text",v-model="formData.username",id="name")
+            label(for="password")= req.strs.password
+            input(type="text",v-model="formData.password",id="password")
+            label(for="your-password")= req.strs.yourPassword
+            input(type="password",v-model="formData.adminPassword",id="your-password")
+            .loading(v-if="loadingForm")
+            button.pure-button.btn-primary(v-else)= req.strs.add
+    #crud-list(v-else)
+        button.pure-button.btn-primary(v-on:click="showForm")
+            i.mdi.mdi-plus
+        p
+            table.pure-table
+                thead
+                    tr
+                        td= req.strs.id
+                        td= req.strs.username
+                tbody
+                    tr(v-for="item in list")
+                        td {{item.id}}
+                        td {{ item.username }}
+                        td
+                            span.animated.bounceInUp(v-if="isInConfirmDelete(item)")
+                                .loading(v-if="loadingDelete")
+                                span(v-else)
+                                    button.pure-button.btn-primary(v-on:click="deleteItem()")= req.strs.confirm
+                                    button.pure-button.btn-accent(v-on:click="cancelDelete()")= req.strs.cancel
+                            span(v-else)
+                                i.mdi.mdi-pencil(v-on:click="edit(item)")
+                                i.mdi.mdi-close(v-on:click="confirmDelete(item)")
+    script(src= req.origin + '/' + mdl.conf.prefix + '/js/controller.js')
